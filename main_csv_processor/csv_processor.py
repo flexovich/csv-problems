@@ -22,15 +22,15 @@ def correct_schoolnames(school_list):
         res = schoolname_parser(school_list[i])
         if res[0] and res[1]:
             if res[0][1].lower() == "средняя школа" or res[0][1].lower() == "сш":
-                final_list.append("{0} {1}".format("Школа", res[1][1]))
+                final_list.append("{0} {1}".format("Школа", res[1][1].upper()))
                 continue
             else:
-                final_list.append("{0} {1}".format(res[0][1].capitalize(), res[1][1]))
+                final_list.append("{0} {1}".format(res[0][1].capitalize(), res[1][1].upper()))
                 continue
         if res[1]:
             found_type = detect_school_type(final_list[i - 20:i], res[1][1])
             if found_type:
-                final_list.append("{0} {1}".format(found_type, res[1][1].capitalize()))
+                final_list.append("{0} {1}".format(found_type, res[1][1].upper()))
                 continue
     return final_list
 
@@ -48,7 +48,7 @@ def categorize_schools(measured_schools):
     return sorted(enough)[::-1], sorted(not_enough)[::-1]
 
 def write_output(enough, not_enough):
-    with open("data/output_test.txt", "w", encoding="utf-8") as output:
+    with open("data/output.txt", "w", encoding="utf-8") as output:
         i = 1
         output.write("              ENOUGH:             ")
         for school in enough:
@@ -79,3 +79,8 @@ with open("data/poll.csv", "r", newline="", encoding="utf-8") as read:
     enough, not_enough = categorize_schools(measured_schools)
 
     write_output(enough, not_enough)
+
+#  to do:
+#  1. sex (M or F)
+#  2. cities categorization
+#  3. гимназия-колледж искусств
