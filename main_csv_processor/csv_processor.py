@@ -41,6 +41,13 @@ def measure_schools(school_list):
         schools[school] += 1
     return schools
 
+def categorize_schools(measured_schools):
+    enough = list(filter(lambda x: int(x[1]) > 19, measured_schools.items()))
+    not_enough = list(filter(lambda x: int(x[1]) <= 19, measured_schools.items()))
+    enough = [(number, name) for (name, number) in enough]
+    not_enough = [(number, name) for (name, number) in not_enough]
+    return sorted(enough)[::-1], sorted(not_enough)[::-1]
+
 with open("data/poll.csv", "r", newline="", encoding="utf-8") as read:
 
     reader = csv.reader(read)
@@ -52,3 +59,7 @@ with open("data/poll.csv", "r", newline="", encoding="utf-8") as read:
     schools = [school for school in schools if school != ""]
 
     corrected = correct_schoolnames(schools)
+
+    measured_schools = measure_schools(corrected)
+
+    enough, not_enough = categorize_schools(measured_schools)
