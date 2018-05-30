@@ -2,8 +2,8 @@ import csv
 import re
 
 def schoolname_parser(schoolname):
-    name = re.search(r".*?(Средняя школа|СШ|Школа|Лицей|Гимназия).*?", schoolname)
-    number = re.search(r".*?(\d{1,3}|БНТУ|БГУ).*?", schoolname)
+    name = re.search(r"(?i).*?(Средняя школа|СШ|Школа|Лицей|Гимназия).*?", schoolname)
+    number = re.search(r"(?i).*?(\d{1,3}|БНТУ|БГУ).*?", schoolname)
     return [name, number]
 
 def correct_schoolnames(school_list):
