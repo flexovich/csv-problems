@@ -1,3 +1,4 @@
+from collections import defaultdict
 import csv
 import re
 
@@ -19,6 +20,7 @@ def correct_schoolnames(school_list):
     final_list = []
     for i in range(len(school_list)):
         res = schoolname_parser(school_list[i])
+
         if res[0] and res[1]:
             if res[0][1].lower() == "средняя школа" or res[0][1].lower() == "сш":
                 final_list.append("{0} {1}".format("Школа", res[1][1]))
@@ -33,6 +35,11 @@ def correct_schoolnames(school_list):
                 continue
     return final_list
 
+def measure_schools(school_list):
+    schools = defaultdict(int)
+    for school in school_list:
+        schools[school] += 1
+    return schools
 
 with open("data/poll.csv", "r", newline="", encoding="utf-8") as read:
 
@@ -41,3 +48,7 @@ with open("data/poll.csv", "r", newline="", encoding="utf-8") as read:
     data = [row for row in reader][1:]
 
     schools = [row[25] if row[25] else row[3] for row in data]
+
+    schools = [school for school in schools if school != ""]
+
+    corrected = correct_schoolnames(schools)
