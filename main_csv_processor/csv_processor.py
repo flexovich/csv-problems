@@ -6,6 +6,15 @@ def schoolname_parser(schoolname):
     number = re.search(r"(?i).*?(\d{1,3}|БНТУ|БГУ).*?", schoolname)
     return [name, number]
 
+def detect_school_type(passed_schools, school_number):
+    school_types = defaultdict(int)
+    for school in passed_schools:
+        res = schoolname_parser(school)
+        if res[1][1] == school_number:
+            school_types[res[0][1]] += 1
+    sorted_school_types = sorted([(value, key) for (key, value) in school_types.items()])
+    return sorted_school_types[-1][1] if sorted_school_types else None
+
 def correct_schoolnames(school_list):
     final_list = []
     for i in range(len(school_list)):
@@ -16,6 +25,11 @@ def correct_schoolnames(school_list):
                 continue
             else:
                 final_list.append("{0} {1}".format(res[0][1].capitalize(), res[1][1]))
+                continue
+        if res[1]:
+            found_type = detect_school_type(final_list[i - 20:i], res[1][1])
+            if found_type:
+                final_list.append("{0} {1}".format(found_type, res[1][1].capitalize()))
                 continue
     return final_list
 
