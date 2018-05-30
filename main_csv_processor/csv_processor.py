@@ -20,7 +20,6 @@ def correct_schoolnames(school_list):
     final_list = []
     for i in range(len(school_list)):
         res = schoolname_parser(school_list[i])
-
         if res[0] and res[1]:
             if res[0][1].lower() == "средняя школа" or res[0][1].lower() == "сш":
                 final_list.append("{0} {1}".format("Школа", res[1][1]))
@@ -48,6 +47,21 @@ def categorize_schools(measured_schools):
     not_enough = [(number, name) for (name, number) in not_enough]
     return sorted(enough)[::-1], sorted(not_enough)[::-1]
 
+def write_output(enough, not_enough):
+    with open("data/output_test.txt", "w", encoding="utf-8") as output:
+        i = 1
+        output.write("              ENOUGH:             ")
+        for school in enough:
+            output.write("\n{0}. {1} - {2}".format(i, school[1], school[0]))
+            i += 1
+        output.write("\n\n\n")
+        i = 1
+        output.write("              NOT ENOUGH:             ")
+        for school in not_enough:
+            output.write("\n{0}. {1} - {2}".format(i, school[1], school[0]))
+            i += 1
+
+
 with open("data/poll.csv", "r", newline="", encoding="utf-8") as read:
 
     reader = csv.reader(read)
@@ -63,3 +77,5 @@ with open("data/poll.csv", "r", newline="", encoding="utf-8") as read:
     measured_schools = measure_schools(corrected)
 
     enough, not_enough = categorize_schools(measured_schools)
+
+    write_output(enough, not_enough)
