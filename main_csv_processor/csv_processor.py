@@ -3,10 +3,17 @@ import csv
 import re
 
 
+def remove_duplicates(data):
+    preprocessed = []
+    for item in data:
+        if item not in preprocessed:
+            preprocessed.append(item)
+    return preprocessed
+
 def schoolname_parser(schoolname):
     name = re.search(r"(?i).*?(Средняя школа|СШ|Школа|Лицей|Гимназия).*?", schoolname)
     number = re.search(r"(?i).*?(\d{1,3}|БНТУ|БГУ).*?", schoolname)
-    return [name, number]  # >>>[name[1], number[1]]      output:['Гимназия', '22']
+    return [name, number]  # ['school_type', 'school_number']
 
 
 def detect_school_type(passed_schools, school_number):
@@ -80,9 +87,14 @@ def write_output(enough, not_enough):
 with open("data/poll.csv", "r", newline="", encoding="utf-8") as read:
     reader = csv.reader(read)
 
-    data = [row for row in reader][1:]  # deleting the first row because it represents columns' names
+    data = [row[1:] for row in reader][1:]  # deleting the first row because it represents columns' names
+                                            # deleting the first column because it represents date and time
 
-    schools = [(row[25], row[1][0]) if row[25] else (row[3], row[1][0]) for row in data]
+    preprocessed_data = remove_duplicates(data)
+
+    print("initial - {0}, preprocessed - {1}".format(len(data), len(preprocessed_data)))
+
+    schools = [(row[24], row[0][0]) if row[24] else (row[2], row[0][0]) for row in preprocessed_data]
 
     schools = [school for school in schools if school[0] != ""]  # deleting items where schoolname is blank
 
