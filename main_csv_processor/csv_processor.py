@@ -80,7 +80,7 @@ def write_output(enough, not_enough):
             i += 1
 
 
-with open("data/poll.csv", "r", newline="", encoding="utf-8") as read:
+with open("data/survey.csv", "r", newline="", encoding="utf-8") as read:
     reader = csv.reader(read)
 
     data = [row[1:] for row in reader][1:]  # deleting the first row because it represents columns' names
