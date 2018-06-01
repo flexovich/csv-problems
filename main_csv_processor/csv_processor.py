@@ -15,7 +15,6 @@ def schoolname_parser(schoolname):
     number = re.search(r"(?i).*?(\d{1,3}|БНТУ|БГУ).*?", schoolname)
     return [name, number]  # ['school_type', 'school_number']
 
-
 def detect_school_type(passed_schools, school_number):
     school_types = defaultdict(int)
     for school in passed_schools:
@@ -91,7 +90,7 @@ with open("data/poll.csv", "r", newline="", encoding="utf-8") as read:
 
     print("initial - {0}, preprocessed - {1}".format(len(data), len(preprocessed_data)))
 
-    schools = [(row[24], row[0][0]) if row[24] else (row[2], row[0][0]) for row in preprocessed_data]
+    schools = [(row[26], row[0][0]) if row[26] else (row[2], row[0][0]) for row in preprocessed_data]
 
     schools = [school for school in schools if school[0] != ""]  # deleting items where schoolname is blank
 
