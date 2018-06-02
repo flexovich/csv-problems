@@ -88,8 +88,6 @@ with open("data/survey.csv", "r", newline="", encoding="utf-8") as read:
 
     preprocessed_data = remove_duplicates(data)
 
-    print("initial - {0}, preprocessed - {1}".format(len(data), len(preprocessed_data)))
-
     schools = [(row[26], row[0][0]) if row[26] else (row[2], row[0][0]) for row in preprocessed_data]
 
     schools = [school for school in schools if school[0] != ""]  # deleting items where schoolname is blank
@@ -97,8 +95,6 @@ with open("data/survey.csv", "r", newline="", encoding="utf-8") as read:
     corrected = correct_schoolnames(schools)
 
     measured_schools = measure_schools(corrected)
-
-    print(measured_schools)
 
     enough, not_enough = categorize_schools(measured_schools)
 
