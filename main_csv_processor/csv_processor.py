@@ -25,7 +25,7 @@ def detect_school_type(passed_schools, school_number):
     return sorted_school_types[-1][1] if sorted_school_types else None
 
 
-def correct_schoolnames(school_list):
+def correct_schoolnames(school_list):  # school_list is list of tuples in form (schoolname, gender)
     final_list = []
     for i in range(len(school_list)):
         res = schoolname_parser(school_list[i][0])
@@ -37,13 +37,13 @@ def correct_schoolnames(school_list):
                 final_list.append(("{0} {1}".format(res[0][1].capitalize(), res[1][1].upper()), school_list[i][1]))
                 continue
         if res[1]:
-            found_type = detect_school_type(final_list[i - 20:i], res[1][1])
+            found_type = detect_school_type(final_list[-20:], res[1][1])
             if found_type:
                 final_list.append(("{0} {1}".format(found_type, res[1][1].upper()), school_list[i][1]))
     return final_list
 
 
-def measure_schools(school_list):  # school_list is list of tuples in form of (schoolname, sex)
+def measure_schools(school_list):  # school_list is list of tuples in form of (schoolname, gender)
     schools_dict = defaultdict(lambda: [0, [0, 0]])  # schools_dict is schoolname:
     for school in school_list:  # [total_number_of_answers,
         schools_dict[school[0]][0] += 1  # [number_of_male_answers, number_of_female_answers]]
