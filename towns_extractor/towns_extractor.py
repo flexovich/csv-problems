@@ -20,3 +20,6 @@ with open("data/source.csv", "r", newline="",  encoding="utf-8") as source, \
     towns[0], towns[capital_city_index] = towns[capital_city_index], towns[0]  # setting capital city to the first
                                                                                                         # position
     processed_towns = remove_duplicates(towns)
+
+    for i in range(len(processed_towns)):
+        writer.writerow([processed_towns[i]])
